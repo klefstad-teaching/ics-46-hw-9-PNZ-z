@@ -74,3 +74,45 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
     }
     return dic[m][n] <= d;
 }
+
+void load_words(set<string> & word_list, const string& file_name){
+    word_list.clear();
+    ifstream infile(file_name);
+    string word;
+    while(infile >> word) word_list.insert(word);
+    infile.close();
+
+}
+
+vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list){
+    queue<vector<string>> ladder_queue;
+    // if(begin_word == end_word)
+    //     return ladder_queue;
+    ladder_queue.push({begin_word});
+    set<string> visited;
+    visited.insert(begin_word);
+    while(!ladder_queue.empty()){
+        vector<string> ladder = ladder_queue.front();
+        ladder_queue.pop();
+        string last_word = ladder.back();
+        if(begin_word == end_word){
+            error(begin_word, end_word, "same words");
+            return {};
+        }
+        for(const string& word : word_list){
+            if(is_adjacent(last_word, word)){
+                visited.insert(word);
+                vector<string> new_ladder = ladder;
+                new_ladder.push_back(word);
+
+                if(word == end_word){
+                    return new_ladder;
+
+                }
+
+                ladder_queue.push(new_ladder);
+            }
+        }
+    }
+    return {};
+}

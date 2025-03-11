@@ -31,3 +31,11 @@ TEST(Ladder, IsAdj){
   string wordfalse = "abshdhakljsd";
   EXPECT_FALSE(is_adjacent(word1, wordfalse));
 }
+
+// TEST(generate_word_ladder, test){
+//   set<string> word_list;
+//   load_words(word_list, "../src/words.txt");
+//   EXPECT_EQ(word_list.size(), 1);
+//   EXPECT_EQ(generate_word_ladder("cat", "dog", word_list).size(), 4);
+//   EXPECT_EQ(generate_word_ladder("marty", "curls", word_list).size(), 6);
+// }
