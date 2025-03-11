@@ -7,7 +7,15 @@ TEST(Replace, Me) {
   EXPECT_TRUE(true);
 }
 
-
+TEST(edit_distance_within, test){
+  string word1 = "abc";
+  string word2 = "bcd";
+  string word3 = "bc";
+  EXPECT_TRUE(edit_distance_within(word1, word2, 2));
+  EXPECT_TRUE(edit_distance_within(word2, word3, 1));
+  EXPECT_FALSE(edit_distance_within(word1, word2, 0));
+  
+}
 TEST(Ladder, IsAdj){
   string word1 = "hello";
   string word2 = "hell";
