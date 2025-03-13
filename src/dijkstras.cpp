@@ -1,19 +1,28 @@
 #include "dijkstras.h"
 #include <algorithm>
-vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous){
-    int leng = G.numVertices;
-    vector<int> distance(n, INF);
-    vector<bool> visited(n, false);
-    previous.resize(n, -1);
 
+struct Node {
+    int vertex;
+    int weight;
+    Node(int v, int w) : vertex(v), weight(w) {}
+    bool operator>(const Node& other) const {
+        return weight > other.weight;
+    }
+};
+
+vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous) {
+    int n = G.numVertices;
+    vector<int> distance(n, INF);
+    previous.assign(n, -1);
+    vector<bool> visited(n, false);
+    
     priority_queue<Node, vector<Node>, greater<Node>> pq;
     pq.push(Node(source, 0));
     distance[source] = 0;
 
     while (!pq.empty()) {
-        Node current = pq.top();
+        int u = pq.top().vertex;
         pq.pop();
-        int u = current.vertex;
 
         if (visited[u]) continue;
         visited[u] = true;
@@ -32,6 +41,7 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
     return distance;
 }
 
+
 vector<int> extract_shortest_path(const vector<int>& distances, const vector<int>& previous, int destination){
     vector<int> path;
     for (int v = destination; v != -1; v = previous[v]) {
@@ -45,7 +55,7 @@ vector<int> extract_shortest_path(const vector<int>& distances, const vector<int
 void print_path(const vector<int>& v, int total){
     cout << "Total cost is " << total << endl;
     for (int i : v){
-        cout << i << " "
+        cout << i << " ";
     }
     cout << endl;
 }

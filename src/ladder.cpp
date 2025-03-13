@@ -78,6 +78,10 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
 void load_words(set<string> & word_list, const string& file_name){
     word_list.clear();
     ifstream infile(file_name);
+     if (!infile) {
+        error("", "", "Failed to open file");
+        return;
+    }
     string word;
     while(infile >> word) word_list.insert(word);
     infile.close();
@@ -85,6 +89,10 @@ void load_words(set<string> & word_list, const string& file_name){
 }
 
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list){
+    if (begin_word == end_word) {
+        error(begin_word, end_word, "Words are the same");
+        return {};
+    }
     queue<vector<string>> ladder_queue;
     // if(begin_word == end_word)
     //     return ladder_queue;
@@ -100,7 +108,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
             return {};
         }
         for(const string& word : word_list){
-            if(is_adjacent(last_word, word)){
+            if(is_adjacent(last_word, word) && visited.find(word) == visited.end()){
                 
                 vector<string> new_ladder = ladder;
                 new_ladder.push_back(word);
@@ -125,5 +133,10 @@ void print_word_ladder(const vector<string>& ladder){
 }
 
 void verify_word_ladder(){
-    
+    set<string> word_list;
+    load_words(word_list, "src/words.txt");
+    string start = "apple", end= "ably";
+
+    vector<string> ladder = generate_word_ladder(start, end, word_list);
+    print_word_ladder(ladder);
 }
