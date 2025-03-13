@@ -93,6 +93,10 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
         error(begin_word, end_word, "Words are the same");
         return {};
     }
+    if (word_list.find(end_word) == word_list.end()){
+        error(begin_word, end_word, "end word not in file");
+        return {};
+    }
     queue<vector<string>> ladder_queue;
     // if(begin_word == end_word)
     //     return ladder_queue;
@@ -135,7 +139,7 @@ void print_word_ladder(const vector<string>& ladder){
 void verify_word_ladder(){
     set<string> word_list;
     load_words(word_list, "src/words.txt");
-    string start = "apple", end= "ably";
+    string start = "apple", end= "acdds";
 
     vector<string> ladder = generate_word_ladder(start, end, word_list);
     print_word_ladder(ladder);
