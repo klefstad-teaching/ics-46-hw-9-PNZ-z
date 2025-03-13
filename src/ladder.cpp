@@ -90,8 +90,7 @@ void load_words(set<string> & word_list, const string& file_name){
 
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list){
     if (begin_word == end_word) {
-        error(begin_word, end_word, "Words are the same");
-        return {};
+        return {begin_word};
     }
     if (word_list.find(end_word) == word_list.end()){
         error(begin_word, end_word, "end word not in file");
@@ -104,26 +103,23 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
     set<string> visited;
     visited.insert(begin_word);
     while(!ladder_queue.empty()){
-        vector<string> ladder = ladder_queue.front();
-        ladder_queue.pop();
-        string last_word = ladder.back();
-        if(begin_word == end_word){
-            error(begin_word, end_word, "same words");
-            return {};
-        }
-        for(const string& word : word_list){
-            if(is_adjacent(last_word, word) && visited.find(word) == visited.end()){
-                
-                vector<string> new_ladder = ladder;
-                new_ladder.push_back(word);
-
-                if(word == end_word){
-                    return new_ladder;
-
+        int level_size = ladder_queue.size();
+        set<string> level_visited;
+        for (int i = 0; i < level_size; ++i) {
+            vector<string> ladder = ladder_queue.front();
+            ladder_queue.pop();
+            string last_word = ladder.back();
+            if (last_word == end_word) {
+                return ladder; 
+            }
+            for(const string& word : word_list){
+                if(is_adjacent(last_word, word) && visited.find(word) == visited.end()){
+                    
+                    vector<string> new_ladder = ladder;
+                    new_ladder.push_back(word);
+                    ladder_queue.push(new_ladder);
+                    visited.insert(word);
                 }
-
-                ladder_queue.push(new_ladder);
-                visited.insert(word);
             }
         }
     }
@@ -136,11 +132,23 @@ void print_word_ladder(const vector<string>& ladder){
     }
 }
 
-void verify_word_ladder(){
-    set<string> word_list;
-    load_words(word_list, "src/words.txt");
-    string start = "apple", end= "acdds";
+#define my_assert(e) {cout << #e << ((e) ? " passed": " failed") << endl;}
+void verify_word_ladder() {
 
-    vector<string> ladder = generate_word_ladder(start, end, word_list);
-    print_word_ladder(ladder);
+    set<string> word_list;
+
+    load_words(word_list, "words.txt");
+
+    my_assert(generate_word_ladder("cat", "dog", word_list).size() == 4);
+
+    my_assert(generate_word_ladder("marty", "curls", word_list).size() == 6);
+
+    my_assert(generate_word_ladder("code", "data", word_list).size() == 6);
+
+    my_assert(generate_word_ladder("work", "play", word_list).size() == 6);
+
+    my_assert(generate_word_ladder("sleep", "awake", word_list).size() == 8);
+
+    my_assert(generate_word_ladder("car", "cheat", word_list).size() == 4);
+
 }
