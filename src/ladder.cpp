@@ -127,9 +127,12 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 }
 
 void print_word_ladder(const vector<string>& ladder){
+
+    cout << ladder.size() << endl;
     for(string s: ladder){
         cout << s << " ";
     }
+    cout << endl;
 }
 
 #define my_assert(e) {cout << #e << ((e) ? " passed": " failed") << endl;}
