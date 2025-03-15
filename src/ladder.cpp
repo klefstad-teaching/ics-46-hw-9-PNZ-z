@@ -27,8 +27,8 @@ bool is_adjacent(const string& word1, const string& word2){
         //delete
         bool one_diff = false;
         int i2 = 0;
-        for(int i1 = 0; i1 < word2.length(); ++i1){
-            if(i2 >= word2.length()){
+        for(int i1 = 0; i1 < word1.length(); ++i1){
+            if(i2 >= word1.length()){
                 return !one_diff;
             }
             if(word1[i1] != word2[i2]){
@@ -146,7 +146,8 @@ void verify_word_ladder() {
 
     set<string> word_list;
 
-    load_words(word_list, "words.txt");
+    load_words(word_list, "src/words.txt");
     my_assert(generate_word_ladder("cat", "dog", word_list).size() == 4);
-
+    print_word_ladder(generate_word_ladder("work", "play", word_list));
+    print_word_ladder(generate_word_ladder("sleep", "awake", word_list));
 }
