@@ -9,7 +9,10 @@ void error(string word1, string word2, string msg){
 // }
 
 bool is_adjacent(const string& word1, const string& word2){
-    if(word1.length() == word2.length()){
+    if(word1 == word2){
+        return true;
+    }
+    else if(word1.length() == word2.length()){
         //equal leng
         bool one_diff = false;
         for (int i = 0; i < word1.length(); ++i){
@@ -45,7 +48,7 @@ bool is_adjacent(const string& word1, const string& word2){
             if(i1 >= word2.length()){
                 return !one_diff;
             }
-            if(word1[i2] != word2[i1]){
+            if(word2[i2] != word1[i1]){
                 if(one_diff) return false;
                 else one_diff = true;
             }
